@@ -1,4 +1,5 @@
 **/.terraform/*
+build/
 *.tfstate
 *.tfstate.*
 
@@ -17,3 +18,4 @@ override.tf.json
 terraform.rc
 
 .DS_Store
+.venv/
