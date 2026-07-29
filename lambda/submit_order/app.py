@@ -5,9 +5,11 @@ import uuid
 from datetime import datetime, timezone
 
 TABLE_NAME = os.environ["TABLE_NAME"]
+TOPIC_ARN = os.environ["ORDER_EVENTS_TOPIC_ARN"]
 
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(TABLE_NAME)
+sns = boto3.client("sns")
 
 def handler(event, context):
     try:
@@ -38,6 +40,22 @@ def handler(event, context):
     }
 
     table.put_item(Item = order_item)
+
+    sns.publish(
+        TopicArn = TOPIC_ARN,
+        Message = json.dumps({
+            "orderId": order_id,
+            "customerId": customer_id,
+            "items": items,
+            "status": status
+        }),
+        MessageAttributes = {
+            "eventType": {
+                "DataType": "String",
+                "StringValue": "OrderCreated"
+            }
+        }
+    )
 
     return _response(
         201, 

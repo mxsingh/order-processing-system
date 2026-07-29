@@ -17,3 +17,11 @@ output "submit_order_function_name" {
 output "api_invoke_url" {
     value = "${aws_api_gateway_stage.dev.invoke_url}/orders"
 }
+
+output "order_events_topic_arn" {
+    value = aws_sns_topic.order_events.arn
+}
+
+output "dlq_url" {
+    value = aws_sqs_queue.dlq.id
+}
