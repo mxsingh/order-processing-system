@@ -18,8 +18,8 @@ resource "aws_iam_role" "lambda_exec" {
 
 # CloudWatch
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
-    role = aws_iam_role.lambda_exec.name
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+    role        = aws_iam_role.lambda_exec.name
+    policy_arn  = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 # DynamoDB
@@ -60,13 +60,13 @@ data "aws_iam_policy_document" "sns_publish" {
 }
 
 resource "aws_iam_policy" "sns_publish" {
-    name = "${var.project_name}-sns-publish"
-    policy = data.aws_iam_policy_document.sns_publish.json
+    name    = "${var.project_name}-sns-publish"
+    policy  = data.aws_iam_policy_document.sns_publish.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_sns_publish" {
-    role = aws_iam_role.lambda_exec.name
-    policy_arn = aws_iam_policy.sns_publish.arn
+    role        = aws_iam_role.lambda_exec.name
+    policy_arn  = aws_iam_policy.sns_publish.arn
 }
 
 # SQS
@@ -86,17 +86,17 @@ data "aws_iam_policy_document" "sqs_consume" {
 }
 
 resource "aws_iam_policy" "sqs_consume" {
-    name = "${var.project_name}-sqs-consume"
-    policy = data.aws_iam_policy_document.sqs_consume.json
+    name    = "${var.project_name}-sqs-consume"
+    policy  = data.aws_iam_policy_document.sqs_consume.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_sqs_consume" {
-    role = aws_iam_role.lambda_exec.name
-    policy_arn = aws_iam_policy.sqs_consume.arn
+    role        = aws_iam_role.lambda_exec.name
+    policy_arn  = aws_iam_policy.sqs_consume.arn
 }
 
 # X-Ray
 resource "aws_iam_role_policy_attachment" "lambda_xray" {
-    role = aws_iam_role.lambda_exec.name
-    policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+    role        = aws_iam_role.lambda_exec.name
+    policy_arn  = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
 }

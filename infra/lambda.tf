@@ -1,13 +1,13 @@
 data "archive_file" "xray_layer" {
   type = "zip"
-  source_dir = "${path.module}/../layers/xray_dependencies"
+  source_dir  = "${path.module}/../layers/xray_dependencies"
   output_path = "${path.module}/build/xray_layer.zip"
 }
 
 resource "aws_lambda_layer_version" "xray_dependencies" {
-  layer_name = "${var.project_name}-xray-dependencies"
-  filename = data.archive_file.xray_layer.output_path
-  source_code_hash = data.archive_file.xray_layer.output_base64sha256
+  layer_name          = "${var.project_name}-xray-dependencies"
+  filename            = data.archive_file.xray_layer.output_path
+  source_code_hash    = data.archive_file.xray_layer.output_base64sha256
   compatible_runtimes = ["python3.12"]
 }
 
@@ -83,8 +83,8 @@ resource "aws_lambda_event_source_mapping" "inventory_check" {
 
 # Notification Lambda
 data "archive_file" "notification" {
-  type = "zip"
-  source_dir = "${path.module}/../lambda/notification"
+  type        = "zip"
+  source_dir  = "${path.module}/../lambda/notification"
   output_path = "${path.module}/build/notification.zip"
 }
 
