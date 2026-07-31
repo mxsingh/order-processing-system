@@ -94,3 +94,9 @@ resource "aws_iam_role_policy_attachment" "lambda_sqs_consume" {
     role = aws_iam_role.lambda_exec.name
     policy_arn = aws_iam_policy.sqs_consume.arn
 }
+
+# X-Ray
+resource "aws_iam_role_policy_attachment" "lambda_xray" {
+    role = aws_iam_role.lambda_exec.name
+    policy_arn = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess"
+}

@@ -1,3 +1,16 @@
+data "archive_file" "xray_layer" {
+  type = "zip"
+  source_dir = "${path.module}/../layers/xray_dependencies"
+  output_path = "${path.module}/build/xray_layer.zip"
+}
+
+resource "aws_lambda_layer_version" "xray_dependencies" {
+  layer_name = "${var.project_name}-xray-dependencies"
+  filename = data.archive_file.xray_layer.output_path
+  source_code_hash = data.archive_file.xray_layer.output_base64sha256
+  compatible_runtimes = ["python3.12"]
+}
+
 data "archive_file" "submit_order" {
   type        = "zip"
   source_dir  = "${path.module}/../lambda/submit_order"
@@ -11,6 +24,7 @@ resource "aws_lambda_function" "submit_order" {
   runtime         = "python3.12"
   timeout         = 10
   memory_size     = 128
+  layers          = [aws_lambda_layer_version.xray_dependencies.arn]
 
   filename            = data.archive_file.submit_order.output_path
   source_code_hash    = data.archive_file.submit_order.output_base64sha256
@@ -20,6 +34,10 @@ resource "aws_lambda_function" "submit_order" {
       TABLE_NAME = aws_dynamodb_table.dynamodb_table.name
       ORDER_EVENTS_TOPIC_ARN = aws_sns_topic.order_events.arn
     }
+  }
+
+  tracing_config {
+    mode = "Active"
   }
 }
 
@@ -46,6 +64,10 @@ resource "aws_lambda_function" "inventory_check" {
 
   filename          = data.archive_file.inventory_check.output_path
   source_code_hash  = data.archive_file.inventory_check.output_base64sha256
+
+  tracing_config {
+    mode = "Active"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "inventory_check" {
@@ -76,6 +98,10 @@ resource "aws_lambda_function" "notification" {
 
   filename          = data.archive_file.notification.output_path
   source_code_hash  = data.archive_file.notification.output_base64sha256
+
+  tracing_config {
+    mode = "Active"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "notification" {

@@ -1,8 +1,12 @@
 import json
 import os
-import boto3
 import uuid
 from datetime import datetime, timezone
+
+import boto3
+from aws_xray_sdk.core import patch_all
+
+patch_all()
 
 TABLE_NAME = os.environ["TABLE_NAME"]
 TOPIC_ARN = os.environ["ORDER_EVENTS_TOPIC_ARN"]

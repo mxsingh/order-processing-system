@@ -19,3 +19,5 @@ terraform.rc
 
 .DS_Store
 .venv/
+
+layers/*/python/

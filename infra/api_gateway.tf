@@ -50,7 +50,8 @@ resource "aws_api_gateway_deployment" "orders_api" {
 }
 
 resource "aws_api_gateway_stage" "dev" {
-    deployment_id   = aws_api_gateway_deployment.orders_api.id
-    rest_api_id     = aws_api_gateway_rest_api.orders_api.id
-    stage_name      = var.environment
+    deployment_id           = aws_api_gateway_deployment.orders_api.id
+    rest_api_id             = aws_api_gateway_rest_api.orders_api.id
+    stage_name              = var.environment
+    xray_tracing_enabled    = true
 }
