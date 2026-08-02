@@ -11,6 +11,14 @@ terraform {
     }
 
     required_version = ">= 1.5.0"
+
+    backend "s3" {
+        bucket          = "order-processing-tf-state-994197759584"
+        key             = "order-processing/terraform.tfstate"
+        region          = "us-east-1"
+        dynamodb_table  = "order-processing-tf-locks"
+        encrypt         = true
+    }
 }
 
 provider "aws" {
