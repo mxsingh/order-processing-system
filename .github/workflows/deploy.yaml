@@ -23,7 +23,7 @@ env:
 jobs:
   plan:
     name: Terraform Plan
-    if: github.event_name == 'pull request'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -80,7 +80,7 @@ jobs:
 
   apply:
     name: Terraform Apply
-    if: github.event_name == 'push' && github.ref == 'refs/head/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
