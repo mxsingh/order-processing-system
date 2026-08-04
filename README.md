@@ -1,4 +1,4 @@
-# Event-driven order processing system
+# Event-Driven Order Processing System
 
 A serverless, event-driven order processing pipeline on AWS, built to mirror production backend architecture. Fully provisioned as infrastructure-as-code with automated CI/CD.
 
